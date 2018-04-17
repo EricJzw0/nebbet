@@ -1,0 +1,372 @@
+$bg-color: #F9DD95;
+
+.container
+{
+  width: 100%;
+  height: 100%;
+  background-color: $bg-color;
+  overflow: hidden;
+  position: relative;
+}
+
+.main-background
+{
+  width: 100%;
+  height: 100%;
+  background-color: $bg-color;
+  overflow: hidden;
+  position: relative;
+
+  .top-button-section
+  {
+    width: 100%;
+    height: 1.725rem;
+    margin-top: 0.775rem;
+    img
+    {
+      display: block;
+      float: left;
+      width: 2.675rem;
+      height: 100%;
+    }
+
+    .address-button, .sign-out-button
+    {
+      float: right;
+    }
+
+    .back-button
+    {
+      margin-left: 0.5rem;
+    }
+    .sign-out-button
+    {
+      margin-right: 0.5rem;
+    }
+
+    .address-button
+    {
+      margin-right: 0.425rem;
+    }
+  }
+
+  .banner
+  {
+    width: 17.5rem;
+    height: 7.45rem;
+    display: block;
+    margin: 0.475rem auto 0;
+  }
+
+  .randomize-section
+  {
+    width: 17.575rem;
+    height: 7.425rem;
+    //height: 9.675rem;
+    margin: 0.75rem auto 0;
+
+    .machine
+    {
+      position: relative;
+      width: 5.625rem;
+      height: 100%;
+      float: left;
+      overflow: hidden;
+
+      .bottom-layer
+      {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      .top-layer
+      {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+      }
+    }
+    .machine-second, .machine-third
+    {
+      margin-left: 0.35rem;
+    }
+
+    .randomizeMachine
+    {
+      width: 100%;
+      height: 9.675rem;
+      z-index: 1;
+      position: absolute;
+      top: -1.125rem;
+      left: 0;
+      div
+      {
+        width: 3.225rem;
+        height: 3.225rem;
+        margin: auto;
+        position: relative;
+      }
+      div img
+      {
+        display: block;
+        width: 80%;
+        height: 80%;
+        margin: auto;
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+
+      }
+    }
+  }
+
+  .bill-first-section, .bill-second-section
+  {
+    height: 2.25rem;
+    width: 100%;
+    position: relative;
+    margin-top: 0.675rem;
+
+    .balance-section, .cost-section
+    {
+      width: 9.2rem;
+      height: 1.7rem;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0.625rem;
+
+      img
+      {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .recharge-button, .withdraw-button
+    {
+      display: block;
+      width: 5.85rem;
+      height: 100%;
+      float: right;
+      margin-right: 0.8rem;
+    }
+
+  }
+  .bill-second-section
+  {
+    margin-top: 0.175rem;
+  }
+  .start-button
+  {
+    display: block;
+    width: 5.725rem;
+    height: 3.325rem;
+    position: absolute;
+    margin: auto;
+    //bottom: 0.5rem;
+    left: 0;
+    right: 0;
+
+  }
+}
+
+body
+{
+  background: $bg-color;;
+}
+
+.main-background-desk
+{
+  position: absolute;
+  background-color: $bg-color;
+  width: 800px;
+  height: 600px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  .back-button, .sign-out-button, .address-button
+  {
+    display: block;
+    width: 45px;
+    height: 29px;
+    position: absolute;
+    top: 24px;
+  }
+
+  .back-button
+  {
+    left: 24px;
+  }
+  .sign-out-button
+  {
+    right: 24px;
+  }
+  .address-button
+  {
+    right: 76px;
+  }
+
+  .banner
+  {
+    display: block;
+    position: absolute;
+    top: 92px;
+    left: 55px;
+    width: 440px;
+    height: 187.5px;
+  }
+
+  .randomize-section
+  {
+    display: block;
+    position: absolute;
+    top: 308px;
+    left: 55px;
+    width: 440px;
+    height: 187.5px;
+
+    .machine
+    {
+      position: relative;
+      width: 140px;
+      height: 100%;
+      float: left;
+      overflow: hidden;
+
+      .bottom-layer
+      {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      .top-layer
+      {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+      }
+
+    }
+
+    .machine-second, .machine-third
+    {
+      margin-left: 10px;
+    }
+
+    .randomizeMachine
+    {
+      width: 100%;
+      height: 281.25px;
+      z-index: 1;
+      position: absolute;
+      top: -46.875px;
+      left: 0;
+
+      div
+      {
+        width: 93.75px;
+        height: 93.75px;
+        margin: auto;
+        position: relative;
+      }
+
+      div img
+      {
+        display: block;
+        width: 80%;
+        height: 80%;
+        margin: auto;
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+
+      }
+    }
+  }
+
+  .balance-section, .cost-section
+  {
+    width: 231.5px;
+    height: 43px;
+    position: absolute;
+    left: 515px;
+    img
+    {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .balance-section
+  {
+    top: 108px;
+  }
+  .cost-section
+  {
+    top: 168px;
+  }
+
+  .button-section
+  {
+    position: absolute;
+    width: 231.5px;
+    height: 40px;
+    left: 515px;
+    top: 232px;
+
+    .recharge-button
+    {
+      display: block;
+      width: 104px;
+      height: 100%;
+      float: left;
+    }
+    .withdraw-button
+    {
+      display: block;
+      width: 104px;
+      height: 100%;
+      float: right;
+    }
+  }
+  .start-button
+  {
+    display: block;
+    width: 123px;
+    height: 72px;
+    position: absolute;
+    top: 380px;
+    left: 570px;
+  }
+
+}
