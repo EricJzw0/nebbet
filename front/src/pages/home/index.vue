@@ -208,20 +208,24 @@
 </template>
 <script>
   import '../../libs/jquery.slotmachine'
-  import {mapState} from 'vuex'
+
+  var HttpRequest = require("nebulas").HttpRequest;
+  var Neb = require("nebulas").Neb;
+  var Account = require("nebulas").Account;
+  var Transaction = require("nebulas").Transaction;
+  var neb = new Neb();
+  neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
 
   export default {
     name: 'home',
     data: function () {
       return {
         startButtonBottom: 0,
-        web3: this.$store.state.web3,
         browserInfo: {mobile: false},
+        account: sessionStorage.account,
+        contract_address: "n1tycAMRbt2AeWbkqP4Q764a62k47C4Tx6F",
       }
     },
-    computed: mapState({
-      injectedWeb3: state => state.injectedWeb3,
-    }),
 
     components: {},
     methods: {
@@ -253,10 +257,70 @@
         };
         console.log(this.browserInfo);
       },
+      login: function () {
+        // var privateKey = 
+        var privateKey = "fedbb74b0d42c1aa9b3ee0c1a4804cef2cf42d8f5ad6fd55c327dc5cd83af6d4"
+        var account = new Account(privateKey)
+        sessionStorage.account = account
+        this.account = account
+      },
+      createPay: function () {
+        // var value = 
+        var value = "666"
+        var that = this
+        neb.api.getAccountState(this.account.getAddressString()).then(function (state) {
+            var testnetchainID = 1001
+            var tx = new Transaction({
+              chainID: testnetchainID,
+              from: that.account,
+              to: that.contract_address,
+              value: value,
+              nonce: parseInt(state.nonce) + 1,
+              gasPrice: 1000000,
+              gasLimit: 2000000,
+              contract: {
+                function: "play",
+                args: ""
+              }
+            })
+            tx.signTransaction()
+            neb.api.sendRawTransaction(tx.toProtoString()).then(function (resp) {
+                var txhash = resp.txhash
+                that.txhash = txhash
+                console.log(txhash)
+                that.query()
+            })
+        }).catch(function (err) {
+            console.log(err)
+        })
+      },
+      query: function () {
+        var that = this
+        neb.api.getTransactionReceipt({hash: that.txhash}).then(function(receipt) {
+          console.log(receipt)
+        });
+        neb.api.call({
+          chainID: 1001,
+          from: this.account.getAddressString(),
+          to: this.contract_address,
+          value: 0,
+          gasPrice: 1000000,
+          gasLimit: 2000000,
+          contract: {
+            function: "query",
+            args: JSON.stringify([that.txhash])
+          }
+        }).then(function(resp) {
+          console.log(resp)
+          if (resp.result === "null") {
+            that.query()
+          } else {
+            that.result = resp.result
+          }
+        })
+      }
     },
     beforeCreate() {
-      console.log('registerWeb3 Action dispatched from home.vue')
-      this.$store.dispatch('registerWeb3')
     },
     mounted() {
       this.$nextTick(function () {
@@ -269,6 +333,7 @@
       var that = this;
 
       this.$ready(() => {
+        that.login()
 
         var machine1, machine2, machine3;
 
@@ -333,6 +398,7 @@
         }
 
         $(".start-button").click(function () {
+          that.createPay()
           machine1.shuffle(5, onComplete);
           setTimeout(function () {
             machine2.shuffle(5, onComplete);
@@ -340,7 +406,6 @@
           setTimeout(function () {
             machine3.shuffle(5, onComplete);
           }, 1000);
-
         })
       });
 

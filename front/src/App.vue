@@ -10,13 +10,6 @@
     mounted() {
       this.setHtml();
       window.addEventListener('resize', this.setHtml);
-
-//      console.log("!!!!!!!!!!!!!!!!")
-//      var web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/vbOvlwwjM1k0Fmu9XXWd"));
-//      console.log(web3)
-//      console.log(web3.isConnected())
-//      console.log("!!!!!!!!!!!!!!!! end end ")
-
     },
     methods: {
       setHtml(event) {
