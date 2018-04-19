@@ -223,7 +223,7 @@
         startButtonBottom: 0,
         browserInfo: {mobile: false},
         account: sessionStorage.account,
-        contract_address: "n1tycAMRbt2AeWbkqP4Q764a62k47C4Tx6F",
+        contract_address: "n1eKgmeuDcgQZ2YDV9QLFi4Nr9w9XiMy4oT",
       }
     },
 
@@ -258,14 +258,14 @@
         console.log(this.browserInfo);
       },
       login: function () {
-        // var privateKey = 
+        // TODO: fetch private key from user input
         var privateKey = "fedbb74b0d42c1aa9b3ee0c1a4804cef2cf42d8f5ad6fd55c327dc5cd83af6d4"
         var account = new Account(privateKey)
         sessionStorage.account = account
         this.account = account
       },
-      createPay: function () {
-        // var value = 
+      pay: function () {
+        // TODO: fetch bet value from user input
         var value = "666"
         var that = this
         neb.api.getAccountState(this.account.getAddressString()).then(function (state) {
@@ -296,13 +296,10 @@
       },
       query: function () {
         var that = this
-        neb.api.getTransactionReceipt({hash: that.txhash}).then(function(receipt) {
-          console.log(receipt)
-        });
         neb.api.call({
           chainID: 1001,
-          from: this.account.getAddressString(),
-          to: this.contract_address,
+          from: that.account.getAddressString(),
+          to: that.contract_address,
           value: 0,
           gasPrice: 1000000,
           gasLimit: 2000000,
@@ -316,6 +313,7 @@
             that.query()
           } else {
             that.result = resp.result
+            console.log(that.result)
           }
         })
       }
@@ -398,6 +396,8 @@
         }
 
         $(".start-button").click(function () {
+
+          that.pay()
 
           var r1 = 0;
           var r2 = 0;

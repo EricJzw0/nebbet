@@ -5,11 +5,11 @@ var BetContent = function (text) {
         var o = JSON.parse(text);
 		this.stake = new BigNumber(o.stake);
 		this.result = o.result;
-		this.gain = o.gain;
+		this.gain = new BigNumber(o.gain);
 	} else {
 		this.stake = new BigNumber(0);
 		this.result = [-1, -1, -1];
-		this.gain = 0;
+		this.gain = new BigNumber(0);
 	}
 };
 
@@ -82,15 +82,15 @@ BettingContract.prototype = {
     
     _spin: function (seed) {
 		// FIXME
-		r1 = parseInt(seed.slice(0, 20), 16) % 16
-		r2 = parseInt(seed.slice(20, 40), 16) % 16
-		r3 = parseInt(seed.slice(40, 60), 16) % 16		
+		var r1 = new BigNumber(seed.slice(0, 20), 16).mod(16).toNumber()
+		var r2 = new BigNumber(seed.slice(20, 40), 16).mod(16).toNumber()
+		var r3 = new BigNumber(seed.slice(40, 60), 16).mod(16).toNumber()
         return [r1, r2, r3];
     },
 
     _calculateGains: function (stake, result) {
         // TODO
-        return stake - 10;
+        return stake.minus(10);
     }
 };
 
