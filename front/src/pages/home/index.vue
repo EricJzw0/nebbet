@@ -220,7 +220,7 @@
       }
     },
     computed: mapState({
-      injectedWeb3: state => state.injectedWeb3,
+      // injectedWeb3: state => state.injectedWeb3,
     }),
 
     components: {},
@@ -255,8 +255,8 @@
       },
     },
     beforeCreate() {
-      console.log('registerWeb3 Action dispatched from home.vue')
-      this.$store.dispatch('registerWeb3')
+      // console.log('registerWeb3 Action dispatched from home.vue')
+      // this.$store.dispatch('registerWeb3')
     },
     mounted() {
       this.$nextTick(function () {
@@ -290,7 +290,7 @@
         else {
           machine1 = $("#machine-first-real-desk").slotMachine({
             active: 0,
-            delay: 1000
+            delay: 1000,
           });
           machine2 = $("#machine-second-real-desk").slotMachine({
             active: 1,
@@ -333,6 +333,22 @@
         }
 
         $(".start-button").click(function () {
+
+          var r1 = 0;
+          var r2 = 0;
+          var r3 = 0;
+
+          machine1.settings.randomize = function () {
+            return r1;
+          };
+          machine2.settings.randomize = function () {
+            return r2;
+          };
+          machine3.settings.randomize = function () {
+            return r3;
+          };
+
+          // setTimeout(function () {
           machine1.shuffle(5, onComplete);
           setTimeout(function () {
             machine2.shuffle(5, onComplete);
@@ -340,6 +356,8 @@
           setTimeout(function () {
             machine3.shuffle(5, onComplete);
           }, 1000);
+          // }, 500);
+
 
         })
       });
