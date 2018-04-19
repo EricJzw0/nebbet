@@ -355,7 +355,7 @@
         else {
           machine1 = $("#machine-first-real-desk").slotMachine({
             active: 0,
-            delay: 1000
+            delay: 1000,
           });
           machine2 = $("#machine-second-real-desk").slotMachine({
             active: 1,
@@ -398,7 +398,22 @@
         }
 
         $(".start-button").click(function () {
-          that.createPay()
+
+          var r1 = 0;
+          var r2 = 0;
+          var r3 = 0;
+
+          machine1.settings.randomize = function () {
+            return r1;
+          };
+          machine2.settings.randomize = function () {
+            return r2;
+          };
+          machine3.settings.randomize = function () {
+            return r3;
+          };
+
+          // setTimeout(function () {
           machine1.shuffle(5, onComplete);
           setTimeout(function () {
             machine2.shuffle(5, onComplete);

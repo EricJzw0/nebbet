@@ -32,7 +32,6 @@ var BettingContract = function () {
 
 BettingContract.prototype = {
 	init: function () {
-		//TODO:
 	},
 
 	play: function () {
@@ -82,10 +81,11 @@ BettingContract.prototype = {
     },
     
     _spin: function (seed) {
-		a = parseInt(seed.slice(0, 20), 16) % 16
-		b = parseInt(seed.slice(20, 40), 16) % 16
-		c = parseInt(seed.slice(40, 60), 16) % 16		
-        return [a, b, c];
+		// FIXME
+		r1 = parseInt(seed.slice(0, 20), 16) % 16
+		r2 = parseInt(seed.slice(20, 40), 16) % 16
+		r3 = parseInt(seed.slice(40, 60), 16) % 16		
+        return [r1, r2, r3];
     },
 
     _calculateGains: function (stake, result) {
