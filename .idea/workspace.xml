@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="950cde93-8138-4d4c-a2fe-9ed0da598bf0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/src/router/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="950cde93-8138-4d4c-a2fe-9ed0da598bf0" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -19,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/router/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="252">
@@ -27,6 +22,15 @@
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/pages/home/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3421">
+              <caret line="430" column="3" lean-forward="true" selection-start-line="430" selection-start-column="3" selection-end-line="430" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -160,6 +164,21 @@
               <item name="nebbet" type="462c0819:PsiDirectoryNode" />
               <item name="front" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nebbet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nebbet" type="462c0819:PsiDirectoryNode" />
+              <item name="front" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="home" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nebbet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nebbet" type="462c0819:PsiDirectoryNode" />
+              <item name="front" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="router" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -244,12 +263,12 @@
       <workItem from="1522830089208" duration="446000" />
       <workItem from="1523247073319" duration="603000" />
       <workItem from="1523510475754" duration="2000" />
-      <workItem from="1524644292625" duration="736000" />
+      <workItem from="1524644292625" duration="1379000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93154000" />
+    <option name="totallyTimeSpent" value="93797000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -544,13 +563,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/util/getWeb3.js" />
-    <entry file="file://$PROJECT_DIR$/front/src/pages/home/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="270" column="22" selection-start-line="270" selection-start-column="22" selection-end-line="270" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/pages/home/index.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -613,6 +625,13 @@
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/pages/home/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3421">
+          <caret line="430" column="3" lean-forward="true" selection-start-line="430" selection-start-column="3" selection-end-line="430" selection-end-column="3" />
         </state>
       </provider>
     </entry>
