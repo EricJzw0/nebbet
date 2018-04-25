@@ -7,6 +7,9 @@ export const store = new Vuex.Store({
   strict: true,
   state,
   mutations: {
+    setPrivateKey(state, privateKey) {
+      state.privateKey = privateKey
+    }
   },
   actions: {
   }

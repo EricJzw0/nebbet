@@ -9,5 +9,6 @@ let state = {
   },
   contractInstance: null,
   injectedWeb3: false,
+  privateKey: null,
 };
 export default state

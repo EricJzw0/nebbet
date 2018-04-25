@@ -95,7 +95,7 @@
         <img class="recharge-button" src="../../assets/recharge_button.png"/>
         <img class="withdraw-button" src="../../assets/withdraw_button.png"/>
       </div>
-      <img class="start-button" src="../../assets/start_button.png"
+      <img class="start-button" src="../../assets/start_button.png" v-on:click="play"
            v-bind:style="{bottom:startButtonBottom+'rem'}"/>
     </div>
 
@@ -200,7 +200,7 @@
         <img class="withdraw-button" src="../../assets/withdraw_button.png"/>
       </div>
 
-      <img class="start-button" src="../../assets/start_button.png"
+      <img class="start-button" v-on:click="play" src="../../assets/start_button.png"
            v-bind:style="{bottom:startButtonBottom+'rem'}"/>
 
     </div>
@@ -222,8 +222,13 @@
       return {
         startButtonBottom: 0,
         browserInfo: {mobile: false},
-        account: sessionStorage.account,
-        contract_address: "n1eKgmeuDcgQZ2YDV9QLFi4Nr9w9XiMy4oT",
+        privateKey: this.$store.state.privateKey, 
+        account: null,
+        machine1: null,
+        machine2: null,
+        machine3: null,
+        contract_address: "n1iKEaGvYE1YuufCoXRGEA6VQTBV7wsGxmM",
+        result: [-1, -1, -1]
       }
     },
 
@@ -257,11 +262,52 @@
         };
         console.log(this.browserInfo);
       },
+      isSignin: function() {
+        if (this.privateKey !== null) {
+          this.account = new Account(this.privateKey)
+          console.log(this.account.getAddressString())
+          return true
+        }
+        return false
+      },
+      play: function () {
+        if (!this.isSignin()) {
+          this.$router.push('/signin')
+        } else {
+          this.roll()
+          this.pay()
+        }
+      },
+      roll: function() {
+        var that = this
+        this.machine1.settings.randomize = function () {
+          return that.result[0];
+        };
+        this.machine2.settings.randomize = function () {
+          return that.result[1];
+        };
+        this.machine3.settings.randomize = function () {
+          return that.result[2];
+        };
+        that.machine1.shuffle();
+        this.s2 = setTimeout(function () {
+          that.machine2.shuffle();
+        }, 500);
+        this.s3 = setTimeout(function () {
+          that.machine3.shuffle();
+        }, 1000);
+      },
+      stop: function() {
+        clearTimeout(this.s2)
+        clearTimeout(this.s3)
+        this.machine1.stop()
+        this.machine2.stop()
+        this.machine3.stop()
+      },
       pay: function () {
-        // TODO: fetch bet value from user input
         var value = "666"
         var that = this
-        neb.api.getAccountState(this.account.getAddressString()).then(function (state) {
+        neb.api.getAccountState(that.account.getAddressString()).then(function (state) {
             var testnetchainID = 1001
             var tx = new Transaction({
               chainID: testnetchainID,
@@ -281,13 +327,13 @@
                 var txhash = resp.txhash
                 that.txhash = txhash
                 console.log(txhash)
-                that.query()
+                that.query(that.stop)
             })
         }).catch(function (err) {
             console.log(err)
         })
       },
-      query: function () {
+      query: function (onComplete) {
         var that = this
         neb.api.call({
           chainID: 1001,
@@ -303,10 +349,15 @@
         }).then(function(resp) {
           console.log(resp)
           if (resp.result === "null") {
-            that.query()
+            if (resp.execute_err === "") {
+              that.query(onComplete)
+            } else {
+              onComplete()
+            }
           } else {
-            that.result = resp.result
+            that.result = JSON.parse(resp.result).result
             console.log(that.result)
+            onComplete()
           }
         })
       }
@@ -316,7 +367,6 @@
     mounted() {
       this.$nextTick(function () {
         window.addEventListener('resize', this.getDeviceRatio);
-
         this.getBrowserInfo();
         this.getDeviceRatio();
       });
@@ -324,39 +374,34 @@
       var that = this;
 
       this.$ready(() => {
-        var machine1, machine2, machine3;
-
         if (that.browserInfo.mobile) {
-          machine1 = $("#machine-first-real").slotMachine({
+          that.machine1 = $("#machine-first-real").slotMachine({
             active: 0,
             delay: 1000
           });
-          machine2 = $("#machine-second-real").slotMachine({
+          that.machine2 = $("#machine-second-real").slotMachine({
             active: 1,
             delay: 1000
           });
-
-          machine3 = $("#machine-third-real").slotMachine({
+          that.machine3 = $("#machine-third-real").slotMachine({
             active: 2,
             delay: 1000
           });
         }
         else {
-          machine1 = $("#machine-first-real-desk").slotMachine({
+          that.machine1 = $("#machine-first-real-desk").slotMachine({
             active: 0,
             delay: 1000,
           });
-          machine2 = $("#machine-second-real-desk").slotMachine({
+          that.machine2 = $("#machine-second-real-desk").slotMachine({
             active: 1,
             delay: 1000
           });
-
-          machine3 = $("#machine-third-real-desk").slotMachine({
+          that.machine3 = $("#machine-third-real-desk").slotMachine({
             active: 2,
             delay: 1000
           });
         }
-
         function onComplete(active) {
           if (that.browserInfo.mobile) {
             switch (this.element[0].id) {
@@ -385,36 +430,7 @@
             }
           }
         }
-
-        $(".start-button").click(function () {
-
-          that.pay()
-
-          var r1 = 0;
-          var r2 = 0;
-          var r3 = 0;
-
-          machine1.settings.randomize = function () {
-            return r1;
-          };
-          machine2.settings.randomize = function () {
-            return r2;
-          };
-          machine3.settings.randomize = function () {
-            return r3;
-          };
-
-          // setTimeout(function () {
-          machine1.shuffle(5, onComplete);
-          setTimeout(function () {
-            machine2.shuffle(5, onComplete);
-          }, 500);
-          setTimeout(function () {
-            machine3.shuffle(5, onComplete);
-          }, 1000);
-        })
       });
-
     },
     beforeDestroy() {
       window.removeEventListener('resize', this.getDeviceRatio)
