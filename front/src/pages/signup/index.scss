@@ -38,10 +38,10 @@ body
 
   .sign-in-title
   {
-    width: 47px;
+    width: 48px;
     height: 24px;
     display: block;
-    margin: 137px auto 0;
+    margin: 100px auto 0;
 
   }
 
@@ -64,7 +64,7 @@ body
 
   .sign-in-button
   {
-    width: 297px;
+    width: 299px;
     height: 46px;
     display: block;
     margin: 25px auto 0;
@@ -105,12 +105,11 @@ body
 
   .sign-up-button
   {
-    width: 29px;
+    width: 120px;
     height: 15px;
     margin-left: 260px;
     margin-top: 20px;
     display: block;
-
 
     &:hover
     {
@@ -118,5 +117,4 @@ body
     }
 
   }
-
 }

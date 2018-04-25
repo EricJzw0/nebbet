@@ -6,7 +6,7 @@
         <img class="back-button" src="../../assets/back_button.png"/>
       </router-link>
 
-      <img class="sign-in-title" src="../../assets/sign_in_title.png"/>
+      <img class="sign-in-title" src="../../assets/register_title.png"/>
 
       <div class="username-section">
         <input class="username-input" type="text" placeholder="请输入账号"/>
@@ -16,10 +16,14 @@
         <input class="password-input" type="password" placeholder="请输入密码"/>
       </div>
 
-      <img class="sign-in-button" src="../../assets/sign_in_button.png"/>
+      <div class="password-section">
+        <input class="password-input" type="password" placeholder="请重复密码"/>
+      </div>
 
-      <router-link to="/signup/">
-        <img class="sign-up-button" src="../../assets/register_hint_icon.png"/>
+      <img class="sign-in-button" src="../../assets/next_step.png"/>
+
+      <router-link to="/signin/">
+        <img class="sign-up-button" src="../../assets/already_have_account.png"/>
       </router-link>
 
     </div>
