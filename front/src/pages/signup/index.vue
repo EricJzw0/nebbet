@@ -9,18 +9,18 @@
       <img class="sign-in-title" src="../../assets/register_title.png"/>
 
       <div class="username-section">
-        <input class="username-input" type="text" placeholder="请输入账号"/>
+        <input class="username-input" type="text" v-model="username" placeholder="请输入账号"/>
       </div>
 
       <div class="password-section">
-        <input class="password-input" type="password" placeholder="请输入密码"/>
+        <input class="password-input" type="password" v-model="password" placeholder="请输入密码"/>
       </div>
 
       <div class="password-section">
         <input class="password-input" type="password" placeholder="请重复密码"/>
       </div>
 
-      <img class="sign-in-button" src="../../assets/next_step.png"/>
+      <img class="sign-in-button" v-on:click="signup" src="../../assets/next_step.png"/>
 
       <router-link to="/signin/">
         <img class="sign-up-button" src="../../assets/already_have_account.png"/>
@@ -31,11 +31,14 @@
 </template>
 
 <script>
+var Account = require("nebulas").Account;
   export default {
     name: "index",
     data: function () {
       return {
         browserInfo: {mobile: false},
+        username: "",
+        password: ""
       }
     },
     methods: {
@@ -47,7 +50,18 @@
           this.$nextTick(fn);
         });
       },
-      getBrowserInfo() {
+      signup: function() {
+        var that = this
+        var privateKey = Account.NewAccount().getPrivateKeyString();
+        this.$http.post('http://0.0.0.0:8000/api/user/signup', {
+          username: that.username,
+          password: that.password,
+          private_key: privateKey
+        }).then(function(resp) {
+          console.log(resp)
+        })
+      },
+      getBrowserInfo: function() {
         var u = navigator.userAgent, app = navigator.appVersion;
         this.browserInfo = {//移动终端浏览器版本信息
           trident: u.indexOf('Trident') > -1, //IE内核
@@ -64,6 +78,9 @@
         console.log(this.browserInfo);
         console.log("!!!!!!!!!!!!!!!!!!!!!!");
       },
+      getDeviceRatio: function() {
+
+      }
     },
     mounted() {
       this.$nextTick(function () {

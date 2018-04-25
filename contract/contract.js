@@ -62,19 +62,6 @@ BettingContract.prototype = {
 		});
 	},
 
-	balanceOf: function () {
-		var from = Blockchain.transaction.from;
-		return this.bankVault.get(from);
-	},
-
-	verifyAddress: function (address) {
-		// 1-valid, 0-invalid
-		var result = Blockchain.verifyAddress(address);
-		return {
-			valid: result == 0 ? false : true
-		};
-    },
-
     query: function (tx) {
         var bet = this.betMap.get(tx);
         return bet;
@@ -89,8 +76,23 @@ BettingContract.prototype = {
     },
 
     _calculateGains: function (stake, result) {
-        // TODO
-        return stake.minus(10);
+		var rate = 0;
+		var r1 = result[0];
+		var r2 = result[1];
+		var r3 = result[2];
+		if (r1 === -1) {
+			rate = 0;
+		} else if (r1 === r2 && r2 === r3) {
+			// Lucky number
+			if (r1 === 7) {
+				rate = 10;
+			} else {
+				rate = 5;
+			}
+		} else if (r1 === r2 || r1 === r3 || r2 === r3) {
+			rate = 1.5;
+		}
+        return stake.times(rate);
     }
 };
 

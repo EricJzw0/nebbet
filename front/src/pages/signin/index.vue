@@ -9,14 +9,14 @@
       <img class="sign-in-title" src="../../assets/sign_in_title.png"/>
 
       <div class="username-section">
-        <input class="username-input" type="text" placeholder="请输入账号"/>
+        <input class="username-input" v-model="username" type="text" placeholder="请输入账号"/>
       </div>
 
       <div class="password-section">
-        <input class="password-input" type="password" placeholder="请输入密码"/>
+        <input class="password-input" v-model="password" type="password" placeholder="请输入密码"/>
       </div>
 
-      <img class="sign-in-button" src="../../assets/sign_in_button.png"/>
+      <img class="sign-in-button" v-on:click="signin" src="../../assets/sign_in_button.png"/>
 
       <router-link to="/signup/">
         <img class="sign-up-button" src="../../assets/register_hint_icon.png"/>
@@ -27,11 +27,14 @@
 </template>
 
 <script>
+var Account = require("nebulas").Account;
   export default {
     name: "index",
     data: function () {
       return {
         browserInfo: {mobile: false},
+        username: "",
+        password: ""
       }
     },
     methods: {
@@ -41,6 +44,17 @@
         }
         setTimeout(() => {
           this.$nextTick(fn);
+        });
+      },
+      signin: function() {
+        this.$http.post('http://0.0.0.0:8000/api/user/login', {
+          username: this.username,
+          password: this.password
+        }).then(function(response){
+          console.log(response.private_key)
+          var account = new Account(response.private_key)
+          sessionStorage.account = account
+          this.account = account
         });
       },
       getBrowserInfo() {

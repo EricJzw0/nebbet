@@ -257,13 +257,6 @@
         };
         console.log(this.browserInfo);
       },
-      login: function () {
-        // TODO: fetch private key from user input
-        var privateKey = "fedbb74b0d42c1aa9b3ee0c1a4804cef2cf42d8f5ad6fd55c327dc5cd83af6d4"
-        var account = new Account(privateKey)
-        sessionStorage.account = account
-        this.account = account
-      },
       pay: function () {
         // TODO: fetch bet value from user input
         var value = "666"
@@ -331,8 +324,6 @@
       var that = this;
 
       this.$ready(() => {
-        that.login()
-
         var machine1, machine2, machine3;
 
         if (that.browserInfo.mobile) {
