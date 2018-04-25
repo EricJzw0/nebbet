@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 from .serializers import UserSerialzer
+from django.views.decorators.csrf import csrf_exempt
+
 
 @api_view(['POST'])
 def signup(request):
@@ -15,6 +17,7 @@ def signup(request):
         return Response({'error': 'user existed'}, status=status.HTTP_400_BAD_REQUEST)
     user = User.objects.create(username=username, password=password, private_key=private_key)
     return Response(status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def login(request):
