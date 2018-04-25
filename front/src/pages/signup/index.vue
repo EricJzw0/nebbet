@@ -59,6 +59,8 @@ var Account = require("nebulas").Account;
           private_key: privateKey
         }).then(function(resp) {
           console.log(resp)
+          this.$store.commit('setPrivateKey', privateKey)
+          this.$router.push('home')
         })
       },
       getBrowserInfo: function() {

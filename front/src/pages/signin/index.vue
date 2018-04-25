@@ -51,10 +51,8 @@ var Account = require("nebulas").Account;
           username: this.username,
           password: this.password
         }).then(function(response){
-          console.log(response.private_key)
-          var account = new Account(response.private_key)
-          sessionStorage.account = account
-          this.account = account
+          this.$store.commit('setPrivateKey', response.data.private_key)
+          this.$router.go(-1)
         });
       },
       getBrowserInfo() {
