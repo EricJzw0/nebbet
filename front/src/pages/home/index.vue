@@ -4,7 +4,7 @@
     <div class="main-background-desk" v-if="!browserInfo.mobile">
       <img class="back-button" src="../../assets/back_button.png"/>
       <img class="sign-out-button" v-on:click="signout" src="../../assets/sign_out_button.png"/>
-      <img class="address-button" src="../../assets/address_button.png"/>
+      <img class="address-button" v-on:click="fetchAddress" src="../../assets/address_button.png"/>
       <img class="banner" src="../../assets/banner_animation.gif"/>
 
       <div class="randomize-section">
@@ -104,7 +104,7 @@
       <div class="top-button-section">
         <img class="back-button" src="../../assets/back_button.png"/>
         <img class="sign-out-button" v-on:click="signout" src="../../assets/sign_out_button.png"/>
-        <img class="address-button" src="../../assets/address_button.png"/>
+        <img class="address-button" v-on:click="fetchAddress" src="../../assets/address_button.png"/>
       </div>
       <img class="banner" src="../../assets/banner_animation.gif"/>
       <div class="randomize-section">
@@ -249,6 +249,10 @@
           that.balance = state.balance
         })
       },
+      fetchAddress: function() {
+        console.log(this.address)
+        return this.address
+      },
       getDeviceRatio(event) {
         const heightPerWidth = (document.documentElement.clientHeight / document.documentElement.clientWidth - 1.256) * 750.0 / 40 - 3.325;
         this.startButtonBottom = heightPerWidth / 2
@@ -304,7 +308,9 @@
             gasLimit: 2000000,
           })
           tx.signTransaction()
-          neb.api.sendRawTransaction(tx.toProtoString())
+          neb.api.sendRawTransaction(tx.toProtoString()).then(function (resp) {
+            console.log(resp)
+          })
         }).catch(function (err) {
           console.log(err)
         })
