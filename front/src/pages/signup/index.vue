@@ -20,7 +20,7 @@
         <input class="password-input" type="password" placeholder="请重复密码"/>
       </div>
 
-      <img class="sign-in-button" v-on:click="signup" src="../../assets/next_step.png"/>
+      <img class="sign-in-button" v-on:click="signup" src="../../assets/finish_register.png"/>
 
       <router-link to="/signin/">
         <img class="sign-up-button" src="../../assets/already_have_account.png"/>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-var Account = require("nebulas").Account;
+  var Account = require("nebulas").Account;
   export default {
     name: "index",
     data: function () {
@@ -50,20 +50,24 @@ var Account = require("nebulas").Account;
           this.$nextTick(fn);
         });
       },
-      signup: function() {
-        var that = this
-        var privateKey = Account.NewAccount().getPrivateKeyString();
-        this.$http.post('http://0.0.0.0:8000/api/user/signup', {
+      signup: function () {
+        var that = this;
+        var account = Account.NewAccount();
+        var privateKey = account.getPrivateKeyString();
+
+        console.log(account);
+
+        this.$http.post('http://127.0.0.1:8000/api/user/signup', {
           username: that.username,
           password: that.password,
           private_key: privateKey
-        }).then(function(resp) {
+        }).then(function (resp) {
           console.log(resp)
           this.$store.commit('setPrivateKey', privateKey)
-          this.$router.push('home')
+          this.$router.push('/')
         })
       },
-      getBrowserInfo: function() {
+      getBrowserInfo: function () {
         var u = navigator.userAgent, app = navigator.appVersion;
         this.browserInfo = {//移动终端浏览器版本信息
           trident: u.indexOf('Trident') > -1, //IE内核
@@ -77,10 +81,8 @@ var Account = require("nebulas").Account;
           iPad: u.indexOf('iPad') > -1, //是否iPad
           webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
         };
-        console.log(this.browserInfo);
-        console.log("!!!!!!!!!!!!!!!!!!!!!!");
       },
-      getDeviceRatio: function() {
+      getDeviceRatio: function () {
 
       }
     },
