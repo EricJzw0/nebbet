@@ -4,11 +4,11 @@ var BetContent = function (text) {
 	if (text) {
         var o = JSON.parse(text);
 		this.stake = new BigNumber(o.stake);
-		this.result = o.result;
+		this.numbers = o.numbers;
 		this.gain = new BigNumber(o.gain);
 	} else {
 		this.stake = new BigNumber(0);
-		this.result = [-1, -1, -1];
+		this.numbers = [-1, -1, -1];
 		this.gain = new BigNumber(0);
 	}
 };
@@ -39,11 +39,11 @@ BettingContract.prototype = {
 		var from = Blockchain.transaction.from;
 		var value = Blockchain.transaction.value;
         var stake = new BigNumber(value);
-        var result = this._spin(tx);
-        var amount = this._calculateGains(stake, result);
+        var numbers = this._spin(tx);
+        var amount = this._calculateGains(stake, numbers);
         var bet = new BetContent();
         bet.stake = stake;
-		bet.result = result;
+		bet.numbers = numbers;
 		bet.gain = amount;
 		this.betMap.put(tx, bet);
         if (amount === 0) {
@@ -75,11 +75,11 @@ BettingContract.prototype = {
         return [r1, r2, r3];
     },
 
-    _calculateGains: function (stake, result) {
+    _calculateGains: function (stake, numbers) {
 		var rate = 0;
-		var r1 = result[0];
-		var r2 = result[1];
-		var r3 = result[2];
+		var r1 = numbers[0];
+		var r2 = numbers[1];
+		var r3 = numbers[2];
 		if (r1 === -1) {
 			rate = 0;
 		} else if (r1 === r2 && r2 === r3) {

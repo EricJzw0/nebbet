@@ -3,7 +3,7 @@
   <div class="container">
     <div class="main-background-desk" v-if="!browserInfo.mobile">
       <img class="back-button" src="../../assets/back_button.png"/>
-      <img class="sign-out-button" src="../../assets/sign_out_button.png"/>
+      <img class="sign-out-button" v-on:click="signout" src="../../assets/sign_out_button.png"/>
       <img class="address-button" src="../../assets/address_button.png"/>
       <img class="banner" src="../../assets/banner_animation.gif"/>
 
@@ -92,10 +92,10 @@
         <img class="cost-bg" src="../../assets/cost_section.png"/>
       </div>
       <div class="button-section">
-        <img class="recharge-button" src="../../assets/recharge_button.png"/>
-        <img class="withdraw-button" src="../../assets/withdraw_button.png"/>
+        <img class="recharge-button" v-on:click="recharge" src="../../assets/recharge_button.png"/>
+        <img class="withdraw-button" v-on:click="withdraw" src="../../assets/withdraw_button.png"/>
       </div>
-      <img class="start-button" src="../../assets/start_button.png" v-on:click="play"
+      <img class="start-button" src="../../assets/start_button.png" v-on:click="play" 
            v-bind:style="{bottom:startButtonBottom+'rem'}"/>
     </div>
 
@@ -103,7 +103,7 @@
     <div class="main-background" v-if="browserInfo.mobile">
       <div class="top-button-section">
         <img class="back-button" src="../../assets/back_button.png"/>
-        <img class="sign-out-button" src="../../assets/sign_out_button.png"/>
+        <img class="sign-out-button" v-on:click="signout" src="../../assets/sign_out_button.png"/>
         <img class="address-button" src="../../assets/address_button.png"/>
       </div>
       <img class="banner" src="../../assets/banner_animation.gif"/>
@@ -190,14 +190,14 @@
         <div class="balance-section">
           <img class="balance-bg" src="../../assets/balance_section.png"/>
         </div>
-        <img class="recharge-button" src="../../assets/recharge_button.png"/>
+        <img class="recharge-button" v-on:click="recharge" src="../../assets/recharge_button.png"/>
       </div>
 
       <div class="bill-second-section">
         <div class="cost-section">
           <img class="cost-bg" src="../../assets/cost_section.png"/>
         </div>
-        <img class="withdraw-button" src="../../assets/withdraw_button.png"/>
+        <img class="withdraw-button" v-on:click="withdraw" src="../../assets/withdraw_button.png"/>
       </div>
 
       <img class="start-button" v-on:click="play" src="../../assets/start_button.png"
@@ -227,8 +227,9 @@
         machine1: null,
         machine2: null,
         machine3: null,
-        contract_address: "n1iKEaGvYE1YuufCoXRGEA6VQTBV7wsGxmM",
-        result: [-1, -1, -1]
+        contract_address: "n1ioRmsrUBuiCk74V8C5Sgz8ywdxyKAkNeh",
+        numbers: [-1, -1, -1],
+        disabled: false
       }
     },
 
@@ -241,6 +242,12 @@
         setTimeout(() => {
           this.$nextTick(fn);
         });
+      },
+      fetchBalance: function() {
+        var that = this
+        neb.api.getAccountState(that.account.getAddressString()).then(function(state) {
+          that.balance = state.balance
+        })
       },
       getDeviceRatio(event) {
         const heightPerWidth = (document.documentElement.clientHeight / document.documentElement.clientWidth - 1.256) * 750.0 / 40 - 3.325;
@@ -262,32 +269,81 @@
         };
         console.log(this.browserInfo);
       },
+      isSufficient: function() {
+        if (this.balance < 20000) {
+          console.log("insufficent balance")
+        }
+        console.log(this.balance)
+        return this.balance > 20000;
+      },
+      signout: function() {
+        this.privateKey = null
+      },
       isSignin: function() {
         if (this.privateKey !== null) {
-          this.account = new Account(this.privateKey)
-          console.log(this.account.getAddressString())
           return true
         }
         return false
       },
-      play: function () {
+      recharge: function() {
+        console.log(this.address)
+      },
+      withdraw: function() {
+        var value = '666'
+        var that = this
+        neb.api.getAccountState(that.account.getAddressString()).then(function (state) {
+          var testnetchainID = 1001
+          var tx = new Transaction({
+            chainID: testnetchainID,
+            from: that.account,
+            // FIXME: user input
+            to: that.contract_address,
+            value: value,
+            nonce: parseInt(state.nonce) + 1,
+            gasPrice: 1000000,
+            gasLimit: 2000000,
+          })
+          tx.signTransaction()
+          neb.api.sendRawTransaction(tx.toProtoString())
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      transcationState: function(txhash, onComplete, onError) {
+        var that = this
+        neb.api.getTransactionReceipt({hash: txhash}).then(function (resp) {
+          onComplete(resp)
+        }, function (resp) {
+          onError(resp)
+        })
+      },
+      play: function() {
+        if (this.disabled) {
+          return
+        }
         if (!this.isSignin()) {
           this.$router.push('/signin')
         } else {
-          this.roll()
-          this.pay()
+          this.fetchBalance()
+          if (!this.isSufficient()) {
+            this.recharge()
+          } else {
+            this.roll()
+            this.pay()
+          }
         }
       },
       roll: function() {
         var that = this
+        this.disabled = true
         this.machine1.settings.randomize = function () {
-          return that.result[0];
+          return that.numbers[0];
         };
         this.machine2.settings.randomize = function () {
-          return that.result[1];
+          return that.numbers[1];
         };
         this.machine3.settings.randomize = function () {
-          return that.result[2];
+          return that.numbers[2];
         };
         that.machine1.shuffle();
         this.s2 = setTimeout(function () {
@@ -303,6 +359,7 @@
         this.machine1.stop()
         this.machine2.stop()
         this.machine3.stop()
+        this.disabled = false
       },
       pay: function () {
         var value = "666"
@@ -327,38 +384,47 @@
                 var txhash = resp.txhash
                 that.txhash = txhash
                 console.log(txhash)
-                that.query(that.stop)
+                that.query(txhash)
             })
         }).catch(function (err) {
             console.log(err)
         })
       },
-      query: function (onComplete) {
+      query: function (txhash) {
         var that = this
-        neb.api.call({
-          chainID: 1001,
-          from: that.account.getAddressString(),
-          to: that.contract_address,
-          value: 0,
-          gasPrice: 1000000,
-          gasLimit: 2000000,
-          contract: {
-            function: "query",
-            args: JSON.stringify([that.txhash])
-          }
-        }).then(function(resp) {
+        that.transcationState(txhash, function(resp) {
           console.log(resp)
-          if (resp.result === "null") {
-            if (resp.execute_err === "") {
-              that.query(onComplete)
-            } else {
-              onComplete()
+          neb.api.call({
+            chainID: 1001,
+            from: that.address,
+            to: that.contract_address,
+            value: 0,
+            gasPrice: 1000000,
+            gasLimit: 2000000,
+            contract: {
+              function: "query",
+              args: JSON.stringify([txhash])
             }
-          } else {
-            that.result = JSON.parse(resp.result).result
-            console.log(that.result)
-            onComplete()
-          }
+          }).then(function(resp) {
+            console.log(resp)
+            if (resp.result === "null") {
+              if (resp.execute_err === "") {
+                setTimeout(function() {
+                  that.query(txhash)
+                }, 1000)
+              } else {
+                that.stop()
+              }
+            } else {
+              var result = JSON.parse(resp.result)
+              that.numbers = result.numbers
+              that.gain = result.gain
+              console.log(that.numbers)
+              that.stop()
+            }
+          })
+        }, function (resp) {
+          that.stop()
         })
       }
     },
@@ -372,6 +438,12 @@
       });
 
       var that = this;
+
+      if (that.privateKey !== null) {
+        that.account = new Account(that.privateKey)
+        that.address = that.account.getAddressString()
+        that.fetchBalance()
+      }
 
       this.$ready(() => {
         if (that.browserInfo.mobile) {
