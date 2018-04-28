@@ -227,9 +227,10 @@
         machine1: null,
         machine2: null,
         machine3: null,
-        contract_address: "n1ioRmsrUBuiCk74V8C5Sgz8ywdxyKAkNeh",
+        contract_address: "n1uQcnXqK1yW9nEtvCWQSQq52g74s2JSGRY",
         numbers: [-1, -1, -1],
-        disabled: false
+        disabled: false,
+        autorun: true,
       }
     },
 
@@ -364,8 +365,13 @@
         clearTimeout(this.s3)
         this.machine1.stop()
         this.machine2.stop()
-        this.machine3.stop()
-        this.disabled = false
+        var that = this
+        this.machine3.stop(function() {
+          that.disabled = false
+          if (that.autorun) {
+            that.play()
+          }
+        })
       },
       pay: function () {
         var value = "666"
