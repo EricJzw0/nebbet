@@ -16,7 +16,7 @@ django-smart-selects==1.2.9
 django-sslserver==0.19
 django-suit==0.2.21
 django-user-agents==0.3.0
-djangorestframework==3.3.3
+djangorestframework==3.11.2
 djangorestframework-composed-permissions==0.1
 enum34==1.1.6
 env-tools==2.0.0
