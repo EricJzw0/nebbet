@@ -38,7 +38,7 @@ singledispatch==3.4.0.3
 six==1.11.0
 tini==3.0.1
 ua-parser==0.8.0
-urllib3==1.22
+urllib3==1.26.5
 user-agents==1.1.0
 uWSGI==2.0.15
 wrapt==1.10.11
